@@ -91,6 +91,128 @@ class ThoughtStep:
 
 
 class Approach(ABC):
+    """
+    Abstract base class for different approaches to interact with Azure Search and OpenAI services.
+    Attributes:
+        ALLOW_NON_GPT_MODELS (bool): Allows usage of non-GPT models even if no tokenizer is available for accurate token counting.
+        search_client (SearchClient): Client to interact with Azure Search.
+        openai_client (AsyncOpenAI): Client to interact with OpenAI services.
+        auth_helper (AuthenticationHelper): Helper for authentication and security filters.
+        query_language (Optional[str]): Language for the query.
+        query_speller (Optional[str]): Speller for the query.
+        embedding_deployment (Optional[str]): Deployment name for embedding model.
+        embedding_model (str): Name of the embedding model.
+        embedding_dimensions (int): Dimensions of the embedding model.
+        openai_host (str): Host for OpenAI services.
+        vision_endpoint (str): Endpoint for vision services.
+        vision_token_provider (Callable[[], Awaitable[str]]): Provider for vision service tokens.
+    """
+    def __init__(self, search_client: SearchClient, openai_client: AsyncOpenAI, auth_helper: AuthenticationHelper, 
+                 query_language: Optional[str], query_speller: Optional[str], embedding_deployment: Optional[str], 
+                 embedding_model: str, embedding_dimensions: int, openai_host: str, vision_endpoint: str, 
+                 vision_token_provider: Callable[[], Awaitable[str]]):
+        """
+        Initializes the Approach class with necessary clients and configurations.
+        Args:
+            search_client (SearchClient): Client to interact with Azure Search.
+            openai_client (AsyncOpenAI): Client to interact with OpenAI services.
+            auth_helper (AuthenticationHelper): Helper for authentication and security filters.
+            query_language (Optional[str]): Language for the query.
+            query_speller (Optional[str]): Speller for the query.
+            embedding_deployment (Optional[str]): Deployment name for embedding model.
+            embedding_model (str): Name of the embedding model.
+            embedding_dimensions (int): Dimensions of the embedding model.
+            openai_host (str): Host for OpenAI services.
+            vision_endpoint (str): Endpoint for vision services.
+            vision_token_provider (Callable[[], Awaitable[str]]): Provider for vision service tokens.
+        """
+        # Initialization of attributes
+        """
+        Builds a filter string based on overrides and authentication claims.
+        Args:
+            overrides (dict[str, Any]): Dictionary containing filter overrides.
+            auth_claims (dict[str, Any]): Dictionary containing authentication claims.
+        Returns:
+            Optional[str]: Filter string or None if no filters are applied.
+        """
+        # Implementation of filter building logic
+    async def search(self, top: int, query_text: Optional[str], filter: Optional[str], vectors: List[VectorQuery], 
+                     use_text_search: bool, use_vector_search: bool, use_semantic_ranker: bool, 
+                     use_semantic_captions: bool, minimum_search_score: Optional[float], 
+                     minimum_reranker_score: Optional[float]) -> List[Document]:
+        """
+        Performs a search using the specified parameters.
+        Args:
+            top (int): Number of top results to return.
+            query_text (Optional[str]): Text query for the search.
+            filter (Optional[str]): Filter string for the search.
+            vectors (List[VectorQuery]): List of vector queries.
+            use_text_search (bool): Flag to use text search.
+            use_vector_search (bool): Flag to use vector search.
+            use_semantic_ranker (bool): Flag to use semantic ranker.
+            use_semantic_captions (bool): Flag to use semantic captions.
+            minimum_search_score (Optional[float]): Minimum search score for results.
+            minimum_reranker_score (Optional[float]): Minimum reranker score for results.
+        Returns:
+            List[Document]: List of documents matching the search criteria.
+        """
+        # Implementation of search logic
+    def get_sources_content(self, results: List[Document], use_semantic_captions: bool, use_image_citation: bool) -> list[str]:
+        """
+        Retrieves the content of sources from the search results.
+        Args:
+            results (List[Document]): List of search result documents.
+            use_semantic_captions (bool): Flag to use semantic captions.
+            use_image_citation (bool): Flag to use image citation.
+        Returns:
+            list[str]: List of source contents.
+        """
+        # Implementation of source content retrieval
+        """
+        Generates a citation string for a given source page.
+        Args:
+            sourcepage (str): Source page string.
+            use_image_citation (bool): Flag to use image citation.
+        Returns:
+            str: Citation string.
+        """
+        # Implementation of citation generation
+        """
+        Computes the text embedding for a given query.
+        Args:
+            q (str): Query string.
+        Returns:
+            VectorizedQuery: Vectorized query object.
+        """
+        # Implementation of text embedding computation
+        """
+        Computes the image embedding for a given query.
+        Args:
+            q (str): Query string.
+        Returns:
+            VectorizedQuery: Vectorized query object.
+        """
+        # Implementation of image embedding computation
+    async def run(self, messages: list[ChatCompletionMessageParam], session_state: Any = None, context: dict[str, Any] = {}) -> dict[str, Any]:
+        """
+        Abstract method to run the approach with given messages and session state.
+        Args:
+            messages (list[ChatCompletionMessageParam]): List of chat completion messages.
+            session_state (Any, optional): Session state object. Defaults to None.
+            context (dict[str, Any], optional): Context dictionary. Defaults to {}.
+        Returns:
+            dict[str, Any]: Result of the run.
+        """
+    async def run_stream(self, messages: list[ChatCompletionMessageParam], session_state: Any = None, context: dict[str, Any] = {}) -> AsyncGenerator[dict[str, Any], None]:
+        """
+        Abstract method to run the approach with given messages and session state as a stream.
+        Args:
+            messages (list[ChatCompletionMessageParam]): List of chat completion messages.
+            session_state (Any, optional): Session state object. Defaults to None.
+            context (dict[str, Any], optional): Context dictionary. Defaults to {}.
+        Returns:
+            AsyncGenerator[dict[str, Any], None]: Async generator yielding results.
+        """
 
     # Allows usage of non-GPT model even if no tokenizer is available for accurate token counting
     # Useful for using local small language models, for example
