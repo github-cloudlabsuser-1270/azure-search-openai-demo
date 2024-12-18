@@ -2,50 +2,66 @@
 
 This folder contains the backend code for the Azure OpenAI demo application.
 
+## Overview
+
+The backend application is built using [Quart](https://quart.palletsprojects.com/), a Python framework for asynchronous web applications. It handles various functionalities such as handling chat and ask requests, file uploads, and integration with Azure services.
+
 ## Folder Structure
 
-```
-/C:/Users/azureuser/DemoApp/AzureOpenAIDocumentation/azure-search-openai-demo/app/backend/
-├── ReadMe.md
-├── app.py
-├── requirements.txt
-├── config/
-│   ├── __init__.py
-│   ├── settings.py
-├── models/
-│   ├── __init__.py
-│   ├── model.py
-├── services/
-│   ├── __init__.py
-│   ├── openai_service.py
-├── utils/
-│   ├── __init__.py
-│   ├── helpers.py
-└── tests/
-    ├── __init__.py
-    ├── test_app.py
-```
+├── ReadMe.md ├── app.py ├── requirements.txt ├── config.py ├── auth.py ├── helpers.py ├── approaches/ │ ├── chatreadretrieveread.py │ ├── retrievethenread.py │ ├── chatreadretrievereadvision.py │ ├── retrievethenreadvision.py │ └── ... └── ...
 
-## Description
+## Key Files and Their Functionalities
 
-This backend service is responsible for handling requests, processing data, and interacting with the OpenAI API.
+### [app.py](app.py)
 
-## Setup
+- Sets up the Quart application.
+- Defines routes and configures various services like Azure Blob Storage, Azure OpenAI, and authentication.
+- Key routes include:
+  - `/ask`: Handles requests to ask questions.
+  - `/chat`: Handles chat requests.
+  - `/upload`: Handles file uploads.
+  - `/delete_uploaded`: Handles deletion of uploaded files.
+  - `/list_uploaded`: Lists uploaded files.
 
-1. **Install dependencies**:
-    ```sh
-    pip install -r requirements.txt
-    ```
+### [approaches/](approaches/)
 
-2. **Run the application**:
-    ```sh
-    python app.py
-    ```
+- Contains different approaches for handling chat and ask functionalities.
+- Examples include:
+  - [`chatreadretrieveread.py`](approaches/chatreadretrieveread.py)
+  - [`retrievethenread.py`](approaches/retrievethenread.py)
+  - [`chatreadretrievereadvision.py`](approaches/chatreadretrievereadvision.py)
+  - [`retrievethenreadvision.py`](approaches/retrievethenreadvision.py)
+
+### [auth.py](auth.py)
+
+- Contains authentication helpers and decorators to secure routes and manage user sessions.
+
+### [config.py](config.py)
+
+- Manages backend configuration using environment variables and constants.
+
+### [helpers.py](helpers.py)
+
+- Contains helper functions used across the backend application.
 
 ## Configuration
 
-Configuration settings can be found in the `config/settings.py` file. Adjust the settings as needed for your environment.
+The backend configuration is managed using environment variables. Key configurations include:
 
-## License
+- `AZURE_STORAGE_ACCOUNT_NAME`
+- `AZURE_STORAGE_ACCOUNT_KEY`
+- `AZURE_OPENAI_API_KEY`
+- `AZURE_OPENAI_ENDPOINT`
+- `AZURE_SEARCH_SERVICE_NAME`
+- `AZURE_SEARCH_INDEX_NAME`
 
-This project is licensed under the MIT License.
+## Error Handling
+
+The backend includes error handling mechanisms to log and respond to errors appropriately.
+
+## Running the Backend
+
+To run the backend application locally, use the following command:
+
+```sh
+quart run
